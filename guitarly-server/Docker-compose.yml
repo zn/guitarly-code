@@ -1,0 +1,27 @@
+# run this just in case u want to run only api (and ONLY for development)!
+# otherwise use ../Docker-compose.yml (and ONLY for development too)
+
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=guitarly
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+
+  api:
+    build: .
+    restart: always
+    ports:
+      - 80:80
+    depends_on: 
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Data__Seed=false

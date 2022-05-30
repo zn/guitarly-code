@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ImageFactory": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\hiked\\Downloads\\kino\\kino.jpg\""
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.horizontal-cell {
+	margin-right: 30px;
+}
+.artist-name-wrapper{
+	width: inherit;
+	height: inherit;
+	background-color:rgba(0,0,0,.3);
+	border-radius: 50%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 3;
+}
+
+.artist-name{
+	z-index: 4;
+	color: white;
+	text-align: center;
+}

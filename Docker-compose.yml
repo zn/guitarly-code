@@ -1,0 +1,58 @@
+# Run this only for the development purpose. For the production server use another way.
+
+# To run the app use 'docker-compose up'. It will run 3 containers:
+# 1. db - a container with preconfigured postgres database
+# 2. api - a container with the web server (asp.net core)
+# 3. client - a container with the frontend-app (react js)
+
+# You might want to initialize the database with some data. For this you should do these steps:
+# 1. Up this docker-compose with "Data__Seed=false" env variable in the "api" service. Then stop it. We need this run to create the database itself.
+# 2. Change the value of the variable to "true": Data__Seed=true. Run again. In the logs you will see something like "The database is initialized. Change the flag.".
+# 3. Stop this, change the env to "false" again. That's all.
+
+# This is how to get inside the container
+# docker exec -it <containerId> /bin/sh
+
+# This is how to copy build from container to host
+# docker cp <containerId>:/path/within/container /host/path/target
+
+
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=guitarly
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  api:
+    build: guitarly-server/.
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Data__Seed=false
+
+  client:
+    build: guitarly-client/.
+    restart: always
+    ports:
+      - 10888:10888
+    environment:
+      - CHOKIDAR_USEPOLLING=true # dunno wtf but it's important
+    volumes:
+      - ./guitarly-client:/app
+      - /app/node_modules
+
+volumes:
+  db-data:
